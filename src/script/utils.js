@@ -14,6 +14,20 @@ function showLog(logMessage) {
   console.log(logMessage);
 }
 
+// Setup canvas
+function initCanvas() {
+  // Get WebGL Context
+  const gl = canvas.getContext("webgl2");
+  if (!gl) {
+    showError("This browser does not support WebGL 2.");
+    return;
+  }
+
+  // Clear the color and depth buffer
+  gl.clearColor(0.08, 0.08, 0.08, 1.0);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+}
+
 // Normalize coordinate unit from pixel, to canvas unit
 function normalizeCoor(x, y) {
   canvasXCenter = canvas.width / 2;

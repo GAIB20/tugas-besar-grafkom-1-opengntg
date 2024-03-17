@@ -14,24 +14,22 @@ function helloTriangle() {
   }
 
   // Define line vertices and put it into a GPU buffer
-  const triangleVertices = [
+  const lineVertices = [
     // Top middle
     0.0, 0.5,
     // Bottom left
     -0.5, -0.5,
-    // Bottom right
-    0.5, -0.5,
   ];
-  const triangleGeoCpuBuffer = new Float32Array(triangleVertices);
+  const lineGeoCpuBuffer = new Float32Array(lineVertices);
 
   // Bind the buffer to a GL Array Buffer in the GPU
-  const triangleGeoBuffer = gl.createBuffer();
-  if (!triangleGeoBuffer) {
+  const lineGeoBuffer = gl.createBuffer();
+  if (!lineGeoBuffer) {
     showError("Fail to create line geo buffer");
     return;
   }
-  gl.bindBuffer(gl.ARRAY_BUFFER, triangleGeoBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, triangleGeoCpuBuffer, gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, lineGeoBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, lineGeoCpuBuffer, gl.STATIC_DRAW);
 
   // Define the vertex shader
   const vertexShaderSourceCode = `#version 300 es
@@ -74,19 +72,19 @@ function helloTriangle() {
   }
 
   // Create and link the program to see wether both fragments are compatible with each other
-  const helloTriangleProgram = gl.createProgram();
-  gl.attachShader(helloTriangleProgram, vertexShader);
-  gl.attachShader(helloTriangleProgram, fragmentShader);
-  gl.linkProgram(helloTriangleProgram);
-  if (!gl.getProgramParameter(helloTriangleProgram, gl.LINK_STATUS)) {
-    const linkError = gl.getProgramInfoLog(helloTriangleProgram);
+  const lineProgram = gl.createProgram();
+  gl.attachShader(lineProgram, vertexShader);
+  gl.attachShader(lineProgram, fragmentShader);
+  gl.linkProgram(lineProgram);
+  if (!gl.getProgramParameter(lineProgram, gl.LINK_STATUS)) {
+    const linkError = gl.getProgramInfoLog(lineProgram);
     showError(`Failed to link shaders - ${linkError}`);
     return;
   }
 
   // Get the vertex attribute location
   const vertexPositionAttributeLocation = gl.getAttribLocation(
-    helloTriangleProgram,
+    lineProgram,
     "vertexPosition"
   );
   if (vertexPositionAttributeLocation < 0) {
@@ -106,11 +104,11 @@ function helloTriangle() {
   gl.viewport(0, 0, canvas.width, canvas.height);
 
   // Set GPU program (vertex + fragment shader pair)
-  gl.useProgram(helloTriangleProgram);
+  gl.useProgram(lineProgram);
   gl.enableVertexAttribArray(vertexPositionAttributeLocation);
 
   // Input assembler
-  gl.bindBuffer(gl.ARRAY_BUFFER, triangleGeoBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, lineGeoBuffer);
   gl.vertexAttribPointer(
     // index
     vertexPositionAttributeLocation,
@@ -127,5 +125,5 @@ function helloTriangle() {
   );
 
   // Draw call
-  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  gl.drawArrays(gl.LINES, 0, 2);
 }

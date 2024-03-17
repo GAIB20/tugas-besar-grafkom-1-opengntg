@@ -1,4 +1,4 @@
-function helloTriangle() {
+function helloTriangle(lineVertices) {
   // Get WebGL Context
   const gl = canvas.getContext("webgl2");
   if (!gl) {
@@ -6,13 +6,17 @@ function helloTriangle() {
     return;
   }
 
+  // TEST: line drawing test
   // Define line vertices and put it into a GPU buffer
-  const lineVertices = [
-    // Top middle
-    0.0, 0.5,
-    // Bottom left
-    -0.5, -0.5,
-  ];
+  // const lineVertices = [
+  //   // Top middle
+  //   0.0,
+  //   0.5,
+  //   // Bottom left
+  //   x,
+  //   y,
+  // ];
+  // End of test
   const lineGeoCpuBuffer = new Float32Array(lineVertices);
 
   // Bind the buffer to a GL Array Buffer in the GPU

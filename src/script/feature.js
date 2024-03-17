@@ -1,11 +1,4 @@
 function helloTriangle() {
-  // Get the referenced canvas
-  const canvas = document.querySelector("canvas");
-  if (!canvas) {
-    showError("Cannot get referenced canvas");
-    return;
-  }
-
   // Get WebGL Context
   const gl = canvas.getContext("webgl2");
   if (!gl) {
@@ -58,7 +51,7 @@ function helloTriangle() {
   out vec4 outputColor;
 
   void main() {
-    outputColor = vec4(0.294, 0.0, 0.51, 1.0);
+    outputColor = vec4(0.9, 0.9, 0.9, 1.0);
   }`;
 
   // Create then compile the fragment shader

@@ -18,3 +18,7 @@ canvas {
 #error-box p {
   color: #da6052;
 }
+
+#log-box p {
+  color: #67c6e3;
+}

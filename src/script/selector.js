@@ -1,7 +1,5 @@
-// TEST: line drawing testing
 let isStart = true;
 let lineVertices = [];
-// End of test
 
 // Canvas
 const canvas = document.querySelector("canvas");
@@ -11,18 +9,15 @@ if (!canvas) {
 
 // Get coordinate of the cursor relevant to the canvas.
 canvas.addEventListener("click", (e) => {
-  let { n_x, n_y } = getMousePos(e);
-
-  // TEST: line drawing testing
-  // showLog(`[${n_x}, ${n_y}]`);
-
-  lineVertices.push(n_x);
-  lineVertices.push(n_y);
+  const { n_x, n_y } = getMousePos(e);
 
   if (isStart) {
     isStart = false;
+    lineVertices[0] = n_x;
+    lineVertices[1] = n_y;
   } else {
-    showLog("Draw!");
+    lineVertices[2] = n_x;
+    lineVertices[3] = n_y;
     try {
       helloTriangle(lineVertices);
     } catch (err) {
@@ -32,7 +27,21 @@ canvas.addEventListener("click", (e) => {
       lineVertices = [];
     }
   }
-  // End of test
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  if (!isStart) {
+    const { n_x, n_y } = getMousePos(e);
+    lineVertices[2] = n_x;
+    lineVertices[3] = n_y;
+
+    showLog("Draw preview!");
+    try {
+      helloTriangle(lineVertices);
+    } catch {
+      showError(`Uncaught JavaScript Exception: ${err}`);
+    }
+  }
 });
 
 // Error box

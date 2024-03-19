@@ -3,7 +3,7 @@
  *
  * Must be called in a try catch statement
  */
-function drawLine() {
+function drawLine(vertexShaderSource, fragmentShaderSource) {
   // Make CPU Buffer from array of line vertices
   const lineGeoCpuBuffer = new Float32Array(activeVertices);
 
@@ -17,14 +17,7 @@ function drawLine() {
   gl.bufferData(gl.ARRAY_BUFFER, lineGeoCpuBuffer, gl.STATIC_DRAW);
 
   // Define the vertex shader
-  const vertexShaderSourceCode = `#version 300 es
-  precision mediump float;
-
-  in vec2 vertexPosition;
-  
-  void main() {
-    gl_Position = vec4(vertexPosition, 0.0, 1.0);
-  }`;
+  const vertexShaderSourceCode = vertexShaderSource;
 
   // Create then compile the vertex shader
   const vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -37,14 +30,7 @@ function drawLine() {
   }
 
   // Define the fragment shader
-  const fragmentShaderSourceCode = `#version 300 es
-  precision mediump float;
-  
-  out vec4 outputColor;
-
-  void main() {
-    outputColor = vec4(0.9, 0.9, 0.9, 1.0);
-  }`;
+  const fragmentShaderSourceCode = fragmentShaderSource;
 
   // Create then compile the fragment shader
   const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);

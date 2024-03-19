@@ -1,13 +1,15 @@
 // == Selectors ===========================================================
 const canvas = document.querySelector("canvas");
 const shapeButtonDiv = document.querySelector(".shape-btn-container");
-const canvasColorInput = document.getElementById("canvas-color-input");
+const canvasColorInput = document.querySelector("#canvas-color-input");
+const shapeColorInput = document.querySelector("#shape-color-input");
 
 // == State variables =====================================================
 let gl = undefined;
 let canvasColor = [0.08, 0.08, 0.08, 1.0];
 const shapes = [];
 let selectedShapeMode = "line";
+let shapeColor = [0.9, 0.9, 0.9, 1.0];
 let isDrawing = false;
 let activeVertices = [];
 
@@ -49,6 +51,11 @@ canvasColorInput.addEventListener("input", () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
 });
 
+// == Change shape color handler ==========================================
+shapeColorInput.addEventListener("input", () => {
+  shapeColor = hexToRGBA(shapeColorInput.value);
+});
+
 // == Drawing state handler ===============================================
 canvas.addEventListener("mousedown", (e) => {
   if (!selectedShapeMode) {
@@ -58,7 +65,7 @@ canvas.addEventListener("mousedown", (e) => {
   if (selectedShapeMode === "line") {
     const { x, y } = getMousePos(e);
     activeVertices = [x, y, x, y];
-    drawLine(activeVertices);
+    drawLine(vertexShader, createLineShader(shapeColor));
   }
 
   isDrawing = true;
@@ -73,7 +80,7 @@ canvas.addEventListener("mousemove", (e) => {
     const { x, y } = getMousePos(e);
     activeVertices[2] = x;
     activeVertices[3] = y;
-    drawLine(activeVertices);
+    drawLine(vertexShader, createLineShader(shapeColor));
     return;
   }
 });

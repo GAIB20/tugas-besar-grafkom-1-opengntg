@@ -29,12 +29,14 @@ body {
   color: #2a2a2a;
 }
 
-#canvas-color-container {
+#canvas-color-container,
+#shape-color-container {
   display: flex;
   flex-direction: column;
 }
 
-#canvas-color-input {
+#canvas-color-input,
+#shape-color-input {
   background-color: transparent;
   border: none;
   border-radius: 3px;

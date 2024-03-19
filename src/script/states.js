@@ -78,20 +78,29 @@ canvas.addEventListener("mousedown", (e) => {
   if (selectedShapeMode === "line") {
     const { x, y } = getMousePos(e);
     shapes.lines.push(new Line(x, y, shapeColor));
-    // shapes.lines[0].print();
-    showLog(shapes.lines.length);
+    shapes.lines[shapes.lines.length - 1].print();
   }
 
   isDrawing = true;
 });
 
-// canvas.addEventListener("mousemove", (e) => {
-// });
+canvas.addEventListener("mousemove", (e) => {
+  if (!isDrawing) {
+    return;
+  }
+
+  if (selectedShapeMode === "line") {
+    const { x, y } = getMousePos(e);
+    shapes.lines[shapes.lines.length - 1].setEndVertex(x, y);
+  }
+});
 
 canvas.addEventListener("mouseup", (e) => {
   if (!selectedShapeMode || !isDrawing) {
     return;
   }
+
+  shapes.lines[shapes.lines.length - 1].print();
 
   isDrawing = false;
 });

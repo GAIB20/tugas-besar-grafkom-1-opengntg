@@ -82,7 +82,7 @@ function render(gl, program, attribute, bufferInput, size) {
     // normalize
     false,
     // stride
-    2 * Float32Array.BYTES_PER_ELEMENT,
+    0,
     // offset
     0
   );

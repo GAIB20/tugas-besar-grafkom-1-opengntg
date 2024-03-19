@@ -5,12 +5,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OpenGNTG | Drawing sandbox</title>
+
+  <!-- Styles -->
   <link rel="stylesheet" type="text/css" href="./styles/index.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/navbar.css" />
+
+  <!-- Font awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"
+    type='text/css'>
 </head>
 
 <body>
-  <h1>Drawing Sandbox</h1>
-  <h2>by OpenGNTG</h2>
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <!-- TODO: Implement dropdown menu -->
+      <li id="logo">
+        <span>OpenGNTG</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </li>
+      <li id="cursor" class="tool-btn active">Cursor</li>
+      <li id="canvas" class="tool-btn">Canvas</li>
+      <li id="line" class="tool-btn">Line</li>
+      <li id="square" class="tool-btn">Square</li>
+      <li id="rectangle" class="tool-btn">Rectangle</li>
+      <li id="polygon" class="tool-btn">Polygon</li>
+    </ul>
+  </nav>
+
+  <!-- Main app -->
+
 
   <!-- Canvas color -->
   <div id="canvas-color-container">
@@ -23,14 +47,6 @@
   <canvas>
 
   </canvas>
-
-  <!-- Shape buttons -->
-  <div class="shape-btn-container">
-    <button id="line" class="shape-btn active">Line</button>
-    <button id="square" class="shape-btn">Square</button>
-    <button id="rectangle" class="shape-btn">Rectangle</button>
-    <button id="polygon" class="shape-btn">Polygon</button>
-  </div>
 
   <!-- Shape color -->
   <div id="shape-color-container">

@@ -1,13 +1,13 @@
 // == Selectors ===========================================================
 const canvas = document.querySelector("canvas");
-const shapeButtonDiv = document.querySelector(".shape-btn-container");
+const toolButtons = document.querySelectorAll(".tool-btn");
 const canvasColorInput = document.querySelector("#canvas-color-input");
 const shapeColorInput = document.querySelector("#shape-color-input");
 
 // == State variables =====================================================
 let gl = undefined;
 let canvasColor = [0.08, 0.08, 0.08, 1.0];
-let selectedShapeMode = "line";
+let selectedShapeMode = "cursor";
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 let isDrawing = false;
 const shapes = {
@@ -41,18 +41,16 @@ try {
 }
 
 // == Select shape event handler ==========================================
-for (let i = 0; i < shapeButtonDiv.children.length; i++) {
-  shapeButtonDiv.children[i].addEventListener("click", () => {
-    if (selectedShapeMode === shapeButtonDiv.children[i].id) {
-      shapeButtonDiv.children[i].classList.remove("active");
-      selectedShapeMode = undefined;
-      return;
+for (let i = 0; i < toolButtons.length; i++) {
+  toolButtons[i].addEventListener("click", () => {
+    if (selectedShapeMode === toolButtons[i].id) {
+      toolButtons[i].classList.remove("active");
     } else {
-      selectedShapeMode = shapeButtonDiv.children[i].id;
-      for (let j = 0; j < shapeButtonDiv.children.length; j++) {
-        shapeButtonDiv.children[j].classList.remove("active");
+      selectedShapeMode = toolButtons[i].id;
+      for (let j = 0; j < toolButtons.length; j++) {
+        toolButtons[j].classList.remove("active");
       }
-      shapeButtonDiv.children[i].classList.add("active");
+      toolButtons[i].classList.add("active");
     }
   });
 }

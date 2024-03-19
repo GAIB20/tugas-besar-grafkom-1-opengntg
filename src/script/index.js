@@ -65,7 +65,7 @@ canvas.addEventListener("mousedown", (e) => {
   if (selectedShapeMode === "line") {
     const { x, y } = getMousePos(e);
     activeVertices = [x, y, x, y];
-    drawLine(vertexShader, createLineShader(shapeColor));
+    draw(createShaderProgram(vertexShader, createLineShader(shapeColor)));
   }
 
   isDrawing = true;
@@ -80,7 +80,7 @@ canvas.addEventListener("mousemove", (e) => {
     const { x, y } = getMousePos(e);
     activeVertices[2] = x;
     activeVertices[3] = y;
-    drawLine(vertexShader, createLineShader(shapeColor));
+    draw(createShaderProgram(vertexShader, createLineShader(shapeColor)));
     return;
   }
 });

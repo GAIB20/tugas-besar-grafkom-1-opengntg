@@ -1,5 +1,5 @@
+// Selected shape state
 let selectedShape = undefined;
-
 const shapeButtonDiv = document.querySelector(".shape-btn-container");
 for (let i = 0; i < shapeButtonDiv.children.length; i++) {
   shapeButtonDiv.children[i].addEventListener("click", () => {
@@ -16,3 +16,6 @@ for (let i = 0; i < shapeButtonDiv.children.length; i++) {
     }
   });
 }
+
+// Shapes exist in the canvas
+const shapes = [];

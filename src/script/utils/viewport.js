@@ -1,3 +1,18 @@
+// Request animation frame
+window.requestAnimFrame = (() => {
+  return (
+    window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    /* render per frame (1s / 60 frame) */
+    function (callback) {
+      window.setTimeout(callback, 1000 / 60);
+    }
+  );
+})();
+
 // Normalize coordinate unit from pixel, to canvas unit
 function normalizeCoor(x, y) {
   canvasXCenter = canvas.width / 2;

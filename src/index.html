@@ -9,9 +9,9 @@
   <!-- Styles -->
   <link rel="stylesheet" type="text/css" href="./styles/index.css" />
   <link rel="stylesheet" type="text/css" href="./styles/navbar.css" />
-  <link rel="stylesheet" type="text/css" href="./styles/objectList.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/object-list.css" />
   <link rel="stylesheet" type="text/css" href="./styles/canvas.css" />
-  <link rel="stylesheet" type="text/css" href="./styles/propertyBar.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/property-bar.css" />
 
   <!-- Font awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"
@@ -38,6 +38,53 @@
 
   <!-- Object list -->
   <div id="object-list-container">
+
+    <!-- Line objects -->
+    <div id="line-objects" class="object-list">
+      <div class="object-label list">
+        <i class="fa-solid fa-caret-down hide"></i>
+        <i class="fa-solid fa-caret-right"></i>
+        <span>Lines</span>
+      </div>
+      <div class="items">
+      </div>
+    </div>
+
+    <!-- Square objects -->
+    <div id="square-objects" class="object-list">
+      <div class="object-label list">
+        <i class="fa-solid fa-caret-down hide"></i>
+        <i class="fa-solid fa-caret-right"></i>
+        <span>Squares</span>
+      </div>
+      <div class="items">
+      </div>
+    </div>
+
+
+    <!-- Rectangle objects -->
+    <div id="rectangle-objects" class="object-list">
+      <div class="object-label list">
+        <i class="fa-solid fa-caret-down hide"></i>
+        <i class="fa-solid fa-caret-right"></i>
+        <span>Rectangles</span>
+      </div>
+      <div class="items">
+      </div>
+    </div>
+
+    <!-- Polygon objects -->
+    <div id="polygon-objects" class="object-list">
+      <div class="object-label list">
+        <i class="fa-solid fa-caret-down hide"></i>
+        <i class="fa-solid fa-caret-right"></i>
+        <span>Polygons</span>
+      </div>
+      <div class="items">
+      </div>
+    </div>
+
+    <!-- Dev log box -->
     <div id="dev-box">
       <!-- Box to show error log -->
       <div id="error-box">
@@ -67,7 +114,7 @@
     </div>
 
     <!-- Shape property -->
-    <div id="shape-properties" class="property-container">
+    <div id="shape-properties" class="property-container active">
       <!-- Shape color -->
       <div class="property">
         <label for="shape-color">Color</label>

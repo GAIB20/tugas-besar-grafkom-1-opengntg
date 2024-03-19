@@ -1,8 +1,18 @@
 // == Selectors ===========================================================
+// Canvas
 const canvas = document.querySelector("canvas");
 
+// Tool buttons
 const toolButtons = document.querySelectorAll(".tool-btn");
 
+// Object list
+const objectList = document.querySelectorAll(".object-list");
+const lineObjects = document.querySelector("#line-objects");
+const squareObjects = document.querySelector("#square-objects");
+const rectangleObjects = document.querySelector("#rectangle-objects");
+const polygonObjects = document.querySelector("#polygon-objects");
+
+// Properties
 const propertyContainer = document.querySelectorAll(".property-container");
 
 const canvasColorInput = document.querySelector("#canvas-color-input");
@@ -74,14 +84,32 @@ for (let i = 0; i < toolButtons.length; i++) {
   });
 }
 
-// == Change canvas background color handler ==============================
+// == Object lists ========================================================
+for (let i = 0; i < objectList.length; i++) {
+  objectList[i].querySelector(".object-label").addEventListener("click", () => {
+    objectList[i].classList.toggle("open");
+    objectList[i].querySelector(".fa-caret-down").classList.toggle("hide");
+    objectList[i].querySelector(".fa-caret-right").classList.toggle("hide");
+  });
+}
+
+function insertShapeToHTML(type) {
+  if (type === "line") {
+    lineObjects.querySelector(
+      ".items"
+    ).innerHTML += `<div class="list object-item">Line ${shapes.lines.length}</div>`;
+  }
+}
+
+// == Property handler ====================================================
+// Canvas color
 canvasColorInput.addEventListener("input", () => {
   canvasColorValueSpan.innerHTML = canvasColorInput.value;
   canvasColor = hexToRGBA(canvasColorInput.value);
   gl.clearColor(...canvasColor);
 });
 
-// == Change shape color handler ==========================================
+// Shape color
 shapeColorInput.addEventListener("input", () => {
   shapeColorValueSpan.innerHTML = shapeColorInput.value;
   shapeColor = hexToRGBA(shapeColorInput.value);
@@ -96,6 +124,7 @@ canvas.addEventListener("mousedown", (e) => {
   if (selectedTool === "line") {
     const { x, y } = getMousePos(e);
     shapes.lines.push(new Line(x, y, shapeColor));
+    insertShapeToHTML("line");
   }
 
   isDrawing = true;

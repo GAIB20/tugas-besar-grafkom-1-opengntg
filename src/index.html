@@ -12,12 +12,18 @@
   <h1>Drawing Sandbox</h1>
   <h2>by OpenGNTG</h2>
 
-  <!-- Button container -->
+  <!-- Shape buttons -->
   <div class="shape-btn-container">
     <button id="line" class="shape-btn">Line</button>
     <button id="square" class="shape-btn">Square</button>
     <button id="rectangle" class="shape-btn">Rectangle</button>
     <button id="polygon" class="shape-btn">Polygon</button>
+  </div>
+
+  <!-- Canvas color -->
+  <div id="canvas-color-container">
+    <label for="canvas-color">Canvas color</label>
+    <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
   </div>
 
   <!-- Canvas -->
@@ -37,6 +43,7 @@
 
   <!-- Utilities -->
   <script src="./script/utils/log.js"></script>
+  <script src="./script/utils/parser.js"></script>
 
   <!-- Global state -->
   <script src="./script/state.js"></script>

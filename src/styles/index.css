@@ -29,6 +29,17 @@ body {
   color: #2a2a2a;
 }
 
+#canvas-color-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#canvas-color-input {
+  background-color: transparent;
+  border: none;
+  border-radius: 3px;
+}
+
 canvas {
   width: 400px;
   height: 400px;

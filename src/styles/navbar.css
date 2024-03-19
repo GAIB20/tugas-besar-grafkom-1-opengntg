@@ -1,8 +1,10 @@
 nav {
-  background-color: #141414;
+  background-color: var(--secondary-color);
 
   width: 100%;
   height: 56px;
+
+  border-bottom: solid 1px var(--tertiary-color);
 }
 
 #logo {
@@ -19,7 +21,7 @@ nav ul li {
   width: fit-content;
   height: 100%;
   padding: 0 20px;
-  color: #fcfcfc;
+  color: var(--white);
 
   display: flex;
   align-items: center;
@@ -32,9 +34,9 @@ nav ul li {
 }
 
 nav ul li:hover {
-  background-color: #f6781d;
+  background-color: var(--accent-color);
 }
 
 nav ul li.active {
-  background-color: #f6781d;
+  background-color: var(--accent-color);
 }

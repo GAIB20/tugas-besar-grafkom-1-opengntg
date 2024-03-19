@@ -9,6 +9,8 @@
   <!-- Styles -->
   <link rel="stylesheet" type="text/css" href="./styles/index.css" />
   <link rel="stylesheet" type="text/css" href="./styles/navbar.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/objectList.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/propertyBar.css" />
 
   <!-- Font awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"
@@ -34,34 +36,45 @@
   </nav>
 
   <!-- Main app -->
+  <div class="main-app">
 
+    <!-- Object list -->
+    <div id="object-list-container"></div>
 
-  <!-- Canvas color -->
-  <div id="canvas-color-container">
-    <label for="canvas-color">Canvas color</label>
-    <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
-    <span class="warning">Changing canvas color will also clear the canvas</span>
-  </div>
+    <!-- Canvas -->
+    <div class="canvas-container">
+      <!-- Canvas color -->
+      <div id="canvas-color-container">
+        <label for="canvas-color">Canvas color</label>
+        <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
+        <span class="warning">Changing canvas color will also clear the canvas</span>
+      </div>
 
-  <!-- Canvas -->
-  <canvas>
+      <!-- Canvas -->
+      <canvas>
 
-  </canvas>
+      </canvas>
 
-  <!-- Shape color -->
-  <div id="shape-color-container">
-    <label for="shape-color">Shape color</label>
-    <input type="color" id="shape-color-input" name="shape-color" value="#e5e5e5">
-  </div>
+      <!-- Shape color -->
+      <div id="shape-color-container">
+        <label for="shape-color">Shape color</label>
+        <input type="color" id="shape-color-input" name="shape-color" value="#e5e5e5">
+      </div>
 
-  <!-- Box to show error log -->
-  <div id="error-box">
-    <span>Error messages:</span>
-  </div>
+      <!-- Box to show error log -->
+      <div id="error-box">
+        <span>Error messages:</span>
+      </div>
 
-  <!-- Box to show console log -->
-  <div id="log-box">
-    <span>Log messages:</span>
+      <!-- Box to show console log -->
+      <div id="log-box">
+        <span>Log messages:</span>
+      </div>
+    </div>
+
+    <!-- Property bar -->
+    <div id="property-bar-container"></div>
+
   </div>
 
   <!-- Utilities -->

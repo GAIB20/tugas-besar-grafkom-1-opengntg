@@ -1,0 +1,7 @@
+#object-list-container {
+  width: 260px;
+  height: 100%;
+
+  background-color: var(--secondary-color);
+  border-right: solid 1px var(--tertiary-color);
+}

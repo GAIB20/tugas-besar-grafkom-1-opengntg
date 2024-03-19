@@ -1,0 +1,7 @@
+#property-bar-container {
+  width: 260px;
+  height: 100%;
+
+  background-color: var(--secondary-color);
+  border-left: solid 1px var(--tertiary-color);
+}

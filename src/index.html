@@ -52,19 +52,30 @@
   </div>
 
   <!-- Property bar -->
-  <div id="property-bar-container">
+  <div class="property-bar-container">
 
-    <!-- Canvas color -->
-    <div id="canvas-color-container">
-      <label for="canvas-color">Canvas color</label>
-      <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
-      <span class="warning">Changing canvas color will also clear the canvas</span>
+    <!-- Canvas property -->
+    <div id="canvas-properties" class="property-container">
+      <!-- Canvas color -->
+      <div class="property">
+        <label for="canvas-color">Background</label>
+        <div class="color-input">
+          <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
+          <span id="canvas-color-value">#141414</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Shape color -->
-    <div id="shape-color-container">
-      <label for="shape-color">Shape color</label>
-      <input type="color" id="shape-color-input" name="shape-color" value="#e5e5e5">
+    <!-- Shape property -->
+    <div id="shape-properties" class="property-container">
+      <!-- Shape color -->
+      <div class="property">
+        <label for="shape-color">Color</label>
+        <div class="color-input">
+          <input type="color" id="shape-color-input" name="shape-color" value="#e5e5e5">
+          <span id="shape-color-value">#e5e5e5</span>
+        </div>
+      </div>
     </div>
 
   </div>

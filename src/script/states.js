@@ -1,8 +1,15 @@
 // == Selectors ===========================================================
 const canvas = document.querySelector("canvas");
+
 const toolButtons = document.querySelectorAll(".tool-btn");
+
+const propertyContainer = document.querySelectorAll(".property-container");
+
 const canvasColorInput = document.querySelector("#canvas-color-input");
+const canvasColorValueSpan = document.querySelector("#canvas-color-value");
+
 const shapeColorInput = document.querySelector("#shape-color-input");
+const shapeColorValueSpan = document.querySelector("#shape-color-value");
 
 // == State variables =====================================================
 let gl = undefined;
@@ -40,30 +47,43 @@ try {
   showError(`Initialize canvas failed - ${error}`);
 }
 
-// == Select shape event handler ==========================================
+// == Select tool event handler ===========================================
 for (let i = 0; i < toolButtons.length; i++) {
   toolButtons[i].addEventListener("click", () => {
     if (selectedTool === toolButtons[i].id) {
-      toolButtons[i].classList.remove("active");
+      return;
+    }
+
+    selectedTool = toolButtons[i].id;
+    for (let j = 0; j < toolButtons.length; j++) {
+      toolButtons[j].classList.remove("active");
+    }
+    toolButtons[i].classList.add("active");
+
+    for (let j = 0; j < propertyContainer.length; j++) {
+      propertyContainer[j].classList.remove("active");
+    }
+    if (selectedTool === "cursor") {
+      return;
+    }
+    if (selectedTool === "canvas") {
+      propertyContainer[0].classList.add("active");
     } else {
-      selectedTool = toolButtons[i].id;
-      for (let j = 0; j < toolButtons.length; j++) {
-        toolButtons[j].classList.remove("active");
-      }
-      toolButtons[i].classList.add("active");
+      propertyContainer[1].classList.add("active");
     }
   });
 }
 
 // == Change canvas background color handler ==============================
 canvasColorInput.addEventListener("input", () => {
+  canvasColorValueSpan.innerHTML = canvasColorInput.value;
   canvasColor = hexToRGBA(canvasColorInput.value);
   gl.clearColor(...canvasColor);
-  gl.clear(gl.COLOR_BUFFER_BIT);
 });
 
 // == Change shape color handler ==========================================
 shapeColorInput.addEventListener("input", () => {
+  shapeColorValueSpan.innerHTML = shapeColorInput.value;
   shapeColor = hexToRGBA(shapeColorInput.value);
 });
 

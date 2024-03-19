@@ -1,7 +1,25 @@
 #object-list-container {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+
   width: 260px;
-  height: 100%;
+  height: 100vh;
 
   background-color: var(--secondary-color);
   border-right: solid 1px var(--tertiary-color);
+}
+
+#dev-box {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: fit-content;
+  background-color: var(--secondary-color);
+  border-top: solid 1px var(--tertiary-color);
+
+  font-size: x-small;
 }

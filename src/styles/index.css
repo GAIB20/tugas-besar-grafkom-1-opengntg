@@ -28,41 +28,8 @@ body {
   height: 100vh;
   overflow-y: hidden;
 
-  display: flex;
-  flex-direction: column;
-
   font-family: "Poppins", sans-serif;
   font-weight: 400;
-}
-
-.main-app {
-  width: 100%;
-  flex-grow: 1;
-
-  display: flex;
-}
-
-.canvas-container {
-  flex-grow: 1;
-}
-
-#canvas-color-container,
-#shape-color-container {
-  display: flex;
-  flex-direction: column;
-}
-
-#canvas-color-input,
-#shape-color-input {
-  background-color: transparent;
-  border: none;
-  border-radius: 3px;
-}
-
-canvas {
-  width: 400px;
-  height: 400px;
-  background-color: var(--red);
 }
 
 #error-box p,

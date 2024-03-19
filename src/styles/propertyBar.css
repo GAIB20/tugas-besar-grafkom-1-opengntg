@@ -1,7 +1,25 @@
 #property-bar-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
   width: 260px;
-  height: 100%;
+  height: 100vh;
 
   background-color: var(--secondary-color);
   border-left: solid 1px var(--tertiary-color);
+}
+
+#canvas-color-container,
+#shape-color-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#canvas-color-input,
+#shape-color-input {
+  background-color: transparent;
+  border: none;
+  border-radius: 3px;
 }

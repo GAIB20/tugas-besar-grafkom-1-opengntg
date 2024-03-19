@@ -7,7 +7,7 @@ const shapeColorInput = document.querySelector("#shape-color-input");
 // == State variables =====================================================
 let gl = undefined;
 let canvasColor = [0.08, 0.08, 0.08, 1.0];
-let selectedShapeMode = "cursor";
+let selectedTool = "cursor";
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 let isDrawing = false;
 const shapes = {
@@ -43,10 +43,10 @@ try {
 // == Select shape event handler ==========================================
 for (let i = 0; i < toolButtons.length; i++) {
   toolButtons[i].addEventListener("click", () => {
-    if (selectedShapeMode === toolButtons[i].id) {
+    if (selectedTool === toolButtons[i].id) {
       toolButtons[i].classList.remove("active");
     } else {
-      selectedShapeMode = toolButtons[i].id;
+      selectedTool = toolButtons[i].id;
       for (let j = 0; j < toolButtons.length; j++) {
         toolButtons[j].classList.remove("active");
       }
@@ -69,36 +69,33 @@ shapeColorInput.addEventListener("input", () => {
 
 // == Drawing state handler ===============================================
 canvas.addEventListener("mousedown", (e) => {
-  if (!selectedShapeMode || isDrawing) {
+  if (selectedTool === "cursor" || selectedTool === "canvas" || isDrawing) {
     return;
   }
 
-  if (selectedShapeMode === "line") {
+  if (selectedTool === "line") {
     const { x, y } = getMousePos(e);
     shapes.lines.push(new Line(x, y, shapeColor));
-    shapes.lines[shapes.lines.length - 1].print();
   }
 
   isDrawing = true;
 });
 
 canvas.addEventListener("mousemove", (e) => {
-  if (!isDrawing) {
+  if (selectedTool === "cursor" || selectedTool === "canvas" || !isDrawing) {
     return;
   }
 
-  if (selectedShapeMode === "line") {
+  if (selectedTool === "line") {
     const { x, y } = getMousePos(e);
     shapes.lines[shapes.lines.length - 1].setEndVertex(x, y);
   }
 });
 
 canvas.addEventListener("mouseup", (e) => {
-  if (!selectedShapeMode || !isDrawing) {
+  if (selectedTool === "cursor" || selectedTool === "canvas" || !isDrawing) {
     return;
   }
-
-  shapes.lines[shapes.lines.length - 1].print();
 
   isDrawing = false;
 });

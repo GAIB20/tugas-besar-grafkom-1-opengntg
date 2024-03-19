@@ -1,8 +1,12 @@
 nav {
-  background-color: var(--secondary-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
 
   width: 100%;
   height: 56px;
+  background-color: var(--secondary-color);
 
   border-bottom: solid 1px var(--tertiary-color);
 }

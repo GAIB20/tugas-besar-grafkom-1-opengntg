@@ -19,3 +19,6 @@ for (let i = 0; i < shapeButtonDiv.children.length; i++) {
 
 // Shapes exist in the canvas
 const shapes = [];
+
+// Is user currently drawing state
+const isDrawing = false;

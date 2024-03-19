@@ -66,19 +66,6 @@ function render(gl, program, attribute, bufferInput, size) {
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, cpuBuffer, gl.STATIC_DRAW);
 
-  // TODO: Find out if this works
-  // Merge the shaded pixel fragment with the existing output image
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
-
-  // Clear the color and depth buffer
-  clear();
-
-  // Rasterizer
-  gl.viewport(0, 0, canvas.width, canvas.height);
-
-  // TODO: End of todo
-
   // Set GPU program (vertex + fragment shader pair)
   gl.useProgram(program);
   gl.enableVertexAttribArray(attributeLocation);
@@ -106,7 +93,6 @@ function renderObjects(shapes, program) {
   clear();
 
   let keys = Object.keys(shapes);
-  // showLog(keys);
   for (let key of keys) {
     for (let shape of shapes[key]) {
       shape.render(program);

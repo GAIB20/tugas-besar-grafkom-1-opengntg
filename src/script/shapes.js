@@ -30,6 +30,7 @@ class Line extends Shape {
     // Render colors
     render(gl, program, "vertexColor", this.colors, 4);
 
+    // Draw the line
     for (let i = 0; i < this.vertexBuffer.length; i += 2) {
       gl.drawArrays(gl.LINES, i, 2);
     }

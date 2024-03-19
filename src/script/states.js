@@ -28,6 +28,13 @@ try {
     throw Error("This browser does not support WebGL 2.");
   }
 
+  // Merge the shaded pixel fragment with the existing output image
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+
+  // Rasterizer
+  gl.viewport(0, 0, canvas.width, canvas.height);
+
   clear();
 } catch (error) {
   showError(`Initialize canvas failed - ${error}`);

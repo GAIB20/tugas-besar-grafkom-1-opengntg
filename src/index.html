@@ -14,7 +14,7 @@
 
   <!-- Shape buttons -->
   <div class="shape-btn-container">
-    <button id="line" class="shape-btn">Line</button>
+    <button id="line" class="shape-btn active">Line</button>
     <button id="square" class="shape-btn">Square</button>
     <button id="rectangle" class="shape-btn">Rectangle</button>
     <button id="polygon" class="shape-btn">Polygon</button>
@@ -24,6 +24,7 @@
   <div id="canvas-color-container">
     <label for="canvas-color">Canvas color</label>
     <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
+    <span class="warning">Changing canvas color will also clear the canvas</span>
   </div>
 
   <!-- Canvas -->
@@ -44,15 +45,14 @@
   <!-- Utilities -->
   <script src="./script/utils/log.js"></script>
   <script src="./script/utils/parser.js"></script>
-
-  <!-- Global state -->
-  <script src="./script/state.js"></script>
+  <script src="./script/utils/viewport.js"></script>
 
   <!-- Draw -->
   <script src="./script/draw.js"></script>
 
-  <!-- Main app -->
-  <script src="./script/index.js"></script>
+  <!-- Global state -->
+  <script src="./script/state.js"></script>
+
 </body>
 
 </html>

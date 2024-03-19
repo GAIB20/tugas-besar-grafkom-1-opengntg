@@ -5,10 +5,11 @@ const canvasColorInput = document.getElementById("canvas-color-input");
 
 // == State variables =====================================================
 let gl = undefined;
-let selectedShape = undefined;
 let canvasColor = [0.08, 0.08, 0.08, 1.0];
 const shapes = [];
+let selectedShapeMode = "line";
 let isDrawing = false;
+let activeVertices = [];
 
 // == Initialize WebGL state ==============================================
 try {
@@ -27,12 +28,12 @@ try {
 // == Select shape event handler ==========================================
 for (let i = 0; i < shapeButtonDiv.children.length; i++) {
   shapeButtonDiv.children[i].addEventListener("click", () => {
-    if (selectedShape === shapeButtonDiv.children[i].id) {
+    if (selectedShapeMode === shapeButtonDiv.children[i].id) {
       shapeButtonDiv.children[i].classList.remove("active");
-      selectedShape = undefined;
+      selectedShapeMode = undefined;
       return;
     } else {
-      selectedShape = shapeButtonDiv.children[i].id;
+      selectedShapeMode = shapeButtonDiv.children[i].id;
       for (let j = 0; j < shapeButtonDiv.children.length; j++) {
         shapeButtonDiv.children[j].classList.remove("active");
       }
@@ -50,17 +51,41 @@ canvasColorInput.addEventListener("input", () => {
 
 // == Drawing state handler ===============================================
 canvas.addEventListener("mousedown", (e) => {
+  if (!selectedShapeMode) {
+    return;
+  }
+
+  if (selectedShapeMode === "line") {
+    const { x, y } = getMousePos(e);
+    activeVertices = [x, y, x, y];
+    drawLine(activeVertices);
+  }
+
   isDrawing = true;
-  showLog("User started drawing");
 });
 
 canvas.addEventListener("mousemove", (e) => {
-  if (isDrawing) {
-    showLog("User currently drawing");
+  if (!isDrawing) {
+    return;
+  }
+
+  if (selectedShapeMode === "line") {
+    const { x, y } = getMousePos(e);
+    activeVertices[2] = x;
+    activeVertices[3] = y;
+    drawLine(activeVertices);
+    return;
   }
 });
 
 canvas.addEventListener("mouseup", (e) => {
+  if (!selectedShapeMode) {
+    return;
+  }
+
+  if (selectedShapeMode === "line") {
+    activeVertices = [];
+  }
+
   isDrawing = false;
-  showLog("User stopped drawing");
 });

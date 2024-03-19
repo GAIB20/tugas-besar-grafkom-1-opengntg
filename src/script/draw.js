@@ -3,16 +3,9 @@
  *
  * Must be called in a try catch statement
  */
-function drawLine(lineVertices) {
-  // Get WebGL Context
-  // const gl = canvas.getContext("webgl2");
-  // if (!gl) {
-  //   showError("This browser does not support WebGL 2.");
-  //   return;
-  // }
-
+function drawLine() {
   // Make CPU Buffer from array of line vertices
-  const lineGeoCpuBuffer = new Float32Array(lineVertices);
+  const lineGeoCpuBuffer = new Float32Array(activeVertices);
 
   // Bind the buffer to a GL Array Buffer in the GPU
   const lineGeoBuffer = gl.createBuffer();
@@ -89,7 +82,7 @@ function drawLine(lineVertices) {
   canvas.height = canvas.clientHeight;
 
   // Clear the color and depth buffer
-  gl.clearColor(0.08, 0.08, 0.08, 1.0);
+  gl.clearColor(...canvasColor);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
   // Rasterizer

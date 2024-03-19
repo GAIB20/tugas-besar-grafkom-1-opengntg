@@ -46,7 +46,8 @@ canvas {
   background-color: #da6052;
 }
 
-#error-box p {
+#error-box p,
+.warning {
   color: #da6052;
 }
 

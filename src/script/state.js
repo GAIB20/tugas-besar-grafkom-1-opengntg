@@ -20,5 +20,23 @@ for (let i = 0; i < shapeButtonDiv.children.length; i++) {
 // Shapes exist in the canvas
 const shapes = [];
 
-// Is user currently drawing state
-const isDrawing = false;
+// Drawing state
+let isDrawing = false;
+
+const canvas = document.querySelector("canvas");
+
+canvas.addEventListener("mousedown", (e) => {
+  isDrawing = true;
+  showLog("User started drawing");
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  if (isDrawing) {
+    showLog("User currently drawing");
+  }
+});
+
+canvas.addEventListener("mouseup", (e) => {
+  isDrawing = false;
+  showLog("User stopped drawing");
+});

@@ -1,5 +1,3 @@
-console.log("Import utils/log.js successfully");
-
 // Show error message inside the page error box
 const errorBoxDiv = document.getElementById("error-box");
 function showError(errorText) {

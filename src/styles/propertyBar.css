@@ -6,6 +6,8 @@
 
   width: 260px;
   height: 100vh;
+  padding: 70px 16px 16px 16px;
+  overflow-y: auto;
 
   background-color: var(--secondary-color);
   border-left: solid 1px var(--tertiary-color);

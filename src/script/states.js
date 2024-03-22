@@ -193,12 +193,12 @@ function insertShapeToHTML(type, obj) {
     polygonObjects.querySelector(".items").appendChild(newPolygon);
 
     // Append new polygon points to polygon point list
-    for (let i = 1; i <= obj.numOfVertex; i++) {
-      newPolygon.innerHTML += `<div class="point-item list">
-      <input type="checkbox" id="p-${obj.id}-point-${i}" name="p-${obj.id}-point" value="p-${obj.id}-point-${i}" />
-      <label for="p-${obj.id}-point-${i}">Point ${i}</label>
+    newPolygon.innerHTML += `<div class="point-item list">
+      <input type="checkbox" id="p-${obj.id}-point-${1}" name="p-${
+      obj.id
+    }-point" value="p-${obj.id}-point-${1}" />
+      <label for="p-${obj.id}-point-${1}">Point ${1}</label>
     </div>`;
-    }
 
     const pointInputs = document.querySelectorAll(
       `input[name="p-${obj.id}-point"]`
@@ -235,7 +235,7 @@ function insertShapeToHTML(type, obj) {
 function insertPointToHTML(type, obj) {
   if (type === "polygon") {
     const parentPolygonDiv = document.querySelector(`#div-p-${obj.id}`);
-    const newPointId = obj.numOfVertex;
+    const newPointId = obj.numOfVertex - 1;
     parentPolygonDiv.innerHTML += `<div class="point-item list">
       <input type="checkbox" id="p-${obj.id}-point-${newPointId}" name="p-${obj.id}-point" value="p-${obj.id}-point-${newPointId}" />
       <label for="p-${obj.id}-point-${newPointId}">Point ${newPointId}</label>
@@ -375,6 +375,13 @@ canvas.addEventListener("click", (e) => {
 
   if (isDrawing && selectedTool === "polygon") {
     const currentPolygon = shapes.polygons[shapes.polygons.length - 1];
+
+    if (currentPolygon.isClosed()) {
+      currentPolygon.closePolygon();
+      isDrawing = false;
+      return;
+    }
+
     currentPolygon.addVertex(x, y, x_pix, y_pix, shapeColor);
     insertPointToHTML("polygon", currentPolygon);
   } else if (selectedTool === "polygon") {
@@ -400,6 +407,16 @@ canvas.addEventListener("mousemove", (e) => {
   if (selectedTool === "line") {
     const { x, y, x_pix, y_pix } = getMousePos(e);
     shapes.lines[shapes.lines.length - 1].setEndVertex(x, y, x_pix, y_pix);
+  }
+
+  if (selectedTool === "polygon") {
+    const { x, y, x_pix, y_pix } = getMousePos(e);
+    shapes.polygons[shapes.polygons.length - 1].setEndVertex(
+      x,
+      y,
+      x_pix,
+      y_pix
+    );
   }
 });
 

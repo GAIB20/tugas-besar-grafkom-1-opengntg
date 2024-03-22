@@ -14,7 +14,15 @@ class Shape {
   }
 
   setEndVertex(x, y, xPx, yPx) {
-    throw new Error("Must be implemented");
+    const lastVertexIdx = this.numOfVertex - 1;
+    this.vertexBuffer[lastVertexIdx * 2] = x;
+    this.vertexBuffer[lastVertexIdx * 2 + 1] = y;
+    this.vertexPx[lastVertexIdx * 2 + 1] = xPx;
+    this.vertexPx[lastVertexIdx * 2 + 1] = yPx;
+    this.updateVertexBase();
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
   }
 
   setVertexX(i, x, xPx) {
@@ -108,6 +116,29 @@ class Shape {
     this.updateAnchor();
   }
 
+  rotate(rad) {
+    const cos = Math.cos(rad - degreeToRadian(this.rotation));
+    const sin = Math.sin(rad - degreeToRadian(this.rotation));
+    const anchorPx = [
+      denormalizeX(this.anchor[0]),
+      denormalizeY(this.anchor[1]),
+    ];
+
+    for (let i = 0; i < this.getNumOfVertex(); i++) {
+      const xDist = this.getVertexXPx(i) - anchorPx[0];
+      const yDist = this.getVertexYPx(i) - anchorPx[1];
+
+      const finalX = xDist * cos - yDist * sin + anchorPx[0];
+      const finalY = xDist * sin + yDist * cos + anchorPx[1];
+
+      this.setVertexX(i, normalizeX(finalX), finalX);
+      this.setVertexY(i, normalizeY(finalY), finalY);
+    }
+
+    this.rotation = radianToDegree(rad);
+    this.updateVertexBase();
+  }
+
   updateVertexBase() {
     for (let i = 0; i < this.vertexBuffer.length; i += 2) {
       this.vertexBufferBase[i] = this.vertexBuffer[i];
@@ -132,29 +163,6 @@ class Shape {
     }
     this.anchor[0] = tempX / this.numOfVertex;
     this.anchor[1] = tempY / this.numOfVertex;
-  }
-
-  rotate(rad) {
-    const cos = Math.cos(rad - degreeToRadian(this.rotation));
-    const sin = Math.sin(rad - degreeToRadian(this.rotation));
-    const anchorPx = [
-      denormalizeX(this.anchor[0]),
-      denormalizeY(this.anchor[1]),
-    ];
-
-    for (let i = 0; i < this.getNumOfVertex(); i++) {
-      const xDist = this.getVertexXPx(i) - anchorPx[0];
-      const yDist = this.getVertexYPx(i) - anchorPx[1];
-
-      const finalX = xDist * cos - yDist * sin + anchorPx[0];
-      const finalY = xDist * sin + yDist * cos + anchorPx[1];
-
-      this.setVertexX(i, normalizeX(finalX), finalX);
-      this.setVertexY(i, normalizeY(finalY), finalY);
-    }
-
-    this.rotation = radianToDegree(rad);
-    this.updateVertexBase();
   }
 
   render() {
@@ -189,17 +197,6 @@ class Line extends Shape {
     for (let i = 0; i < this.vertexBuffer.length; i += 2) {
       gl.drawArrays(gl.LINES, i, 2);
     }
-  }
-
-  setEndVertex(x, y, xPx, yPx) {
-    this.vertexBuffer[2] = x;
-    this.vertexBuffer[3] = y;
-    this.vertexPx[2] = xPx;
-    this.vertexPx[3] = yPx;
-    this.updateVertexBase();
-    this.updateAnchor();
-    this.updateWidth();
-    this.updateHeight();
   }
 
   setWidth(newWidth) {
@@ -265,11 +262,11 @@ class Polygon extends Shape {
   constructor(id, x, y, xPx, yPx, rgbaColor) {
     super(id);
 
-    this.vertexBuffer = [x, y];
-    this.vertexBufferBase = [x, y];
-    this.vertexPx = [xPx, yPx];
-    this.colorBuffer = [...rgbaColor];
-    this.numOfVertex = 1;
+    this.vertexBuffer = [x, y, x, y];
+    this.vertexBufferBase = [x, y, x, y];
+    this.vertexPx = [xPx, yPx, xPx, yPx];
+    this.colorBuffer = [...rgbaColor, ...rgbaColor];
+    this.numOfVertex = 2;
     this.anchor = [x, y];
   }
 
@@ -281,27 +278,15 @@ class Polygon extends Shape {
     this.height = 0;
   }
 
-  rotate(rad) {
-    const cos = Math.cos(rad - degreeToRadian(this.rotation));
-    const sin = Math.sin(rad - degreeToRadian(this.rotation));
-    const anchorPx = [
-      denormalizeX(this.anchor[0]),
-      denormalizeY(this.anchor[1]),
-    ];
-
-    for (let i = 0; i < this.getNumOfVertex(); i++) {
-      const xDist = this.getVertexXPx(i) - anchorPx[0];
-      const yDist = this.getVertexYPx(i) - anchorPx[1];
-
-      const finalX = xDist * cos - yDist * sin + anchorPx[0];
-      const finalY = xDist * sin + yDist * cos + anchorPx[1];
-
-      this.setVertexX(i, normalizeX(finalX), finalX);
-      this.setVertexY(i, normalizeY(finalY), finalY);
+  isClosed() {
+    if (this.numOfVertex < 3) {
+      return;
     }
-
-    this.rotation = radianToDegree(rad);
-    this.updateVertexBase();
+    const lastVertexIdx = this.numOfVertex - 1;
+    const dx = this.getVertexX(0) - this.getVertexX(lastVertexIdx);
+    const dy = this.getVertexY(0) - this.getVertexY(lastVertexIdx);
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    return distance < 0.05;
   }
 
   addVertex(x, y, xPx, yPx, rgbaColor) {
@@ -313,8 +298,23 @@ class Polygon extends Shape {
     this.updateAnchor();
     this.updateWidth();
     this.updateHeight();
+  }
 
-    showLog(this.colorBuffer);
+  closePolygon() {
+    this.vertexBuffer.pop();
+    this.vertexBuffer.pop();
+    this.vertexBufferBase.pop();
+    this.vertexBufferBase.pop();
+    this.vertexPx.pop();
+    this.vertexPx.pop();
+    this.colorBuffer.pop();
+    this.colorBuffer.pop();
+    this.colorBuffer.pop();
+    this.colorBuffer.pop();
+    this.numOfVertex -= 1;
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
   }
 
   render(program) {
@@ -327,6 +327,10 @@ class Polygon extends Shape {
     // Draw the line
     if (this.numOfVertex > 2) {
       gl.drawArrays(gl.TRIANGLE_FAN, 0, this.numOfVertex);
+    } else {
+      for (let i = 0; i < this.numOfVertex; i += 2) {
+        gl.drawArrays(gl.LINES, i, 2);
+      }
     }
   }
 }

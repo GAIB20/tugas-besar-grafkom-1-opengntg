@@ -281,6 +281,29 @@ class Polygon extends Shape {
     this.height = 0;
   }
 
+  rotate(rad) {
+    const cos = Math.cos(rad - degreeToRadian(this.rotation));
+    const sin = Math.sin(rad - degreeToRadian(this.rotation));
+    const anchorPx = [
+      denormalizeX(this.anchor[0]),
+      denormalizeY(this.anchor[1]),
+    ];
+
+    for (let i = 0; i < this.getNumOfVertex(); i++) {
+      const xDist = this.getVertexXPx(i) - anchorPx[0];
+      const yDist = this.getVertexYPx(i) - anchorPx[1];
+
+      const finalX = xDist * cos - yDist * sin + anchorPx[0];
+      const finalY = xDist * sin + yDist * cos + anchorPx[1];
+
+      this.setVertexX(i, normalizeX(finalX), finalX);
+      this.setVertexY(i, normalizeY(finalY), finalY);
+    }
+
+    this.rotation = radianToDegree(rad);
+    this.updateVertexBase();
+  }
+
   addVertex(x, y, xPx, yPx, rgbaColor) {
     this.vertexBuffer.push(x, y);
     this.vertexBufferBase.push(x, y);

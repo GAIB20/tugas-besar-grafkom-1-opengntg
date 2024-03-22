@@ -96,7 +96,7 @@ function updateSelectedObjects() {
 
       selectedPoints.parentShape.push(obj);
       selectedPoints.pointIndex.push(pointId);
-    } else {
+    } else if (id.includes("l-")) {
       const obj = shapes.lines[parseInt(id.split("-")[1]) - 1];
       selectedShapes.push(obj);
     }
@@ -108,7 +108,7 @@ function updateSelectedObjects() {
 
       selectedPoints.parentShape.push(obj);
       selectedPoints.pointIndex.push(pointId);
-    } else {
+    } else if (id.includes("p-")) {
       const obj = shapes.polygons[parseInt(id.split("-")[1]) - 1];
       selectedShapes.push(obj);
     }

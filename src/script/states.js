@@ -6,6 +6,8 @@ let gl = undefined;
 let selectedTool = "cursor";
 let isDrawing = false;
 let isEditing = false;
+let isSelectingPolygon = false;
+let isEditingPolygon = false;
 
 // Canvas states
 let canvasColor = [0.08, 0.08, 0.08, 1.0];
@@ -118,6 +120,15 @@ function updateSelectedObjects() {
   // Update mode
   isEditing =
     selectedPoints.parentShape.length > 0 || selectedShapes.length > 0;
+
+  // Update is editing polygon
+  isSelectingPolygon =
+    selectedShapes.length === 1 && selectedShapes[0] instanceof Polygon;
+  if (isSelectingPolygon) {
+    polygonProperty.classList.add("active");
+  } else {
+    polygonProperty.classList.remove("active");
+  }
 
   // Update property bar values
   updatePropertyValues();
@@ -337,6 +348,18 @@ shapeColorInput.addEventListener("input", () => {
   shapeColor = hexToRGBA(shapeColorInput.value);
 });
 
+// Edit polygon button
+editPolygonBtn.addEventListener("click", () => {
+  isEditingPolygon = !isEditingPolygon;
+  if (isEditingPolygon) {
+    editPolygonBtn.innerHTML = "Done";
+    canvas.style.cursor = "crosshair";
+  } else {
+    editPolygonBtn.innerHTML = "Edit shape";
+    canvas.style.cursor = "move";
+  }
+});
+
 // == Drawing state handler ===============================================
 // When the user started drawing
 canvas.addEventListener("mousedown", (e) => {
@@ -365,13 +388,19 @@ canvas.addEventListener("click", (e) => {
   if (
     selectedTool === "cursor" ||
     selectedTool === "canvas" ||
-    selectedTool !== "polygon" ||
-    isEditing
+    selectedTool !== "polygon"
   ) {
     return;
   }
 
   const { x, y, x_pix, y_pix } = getMousePos(e);
+
+  if (isEditingPolygon) {
+    showLog("Insert new polygon point");
+    const currentPolygon = selectedShapes[0];
+    currentPolygon.editPolygon(x, y, x_pix, y_pix, shapeColor);
+    return;
+  }
 
   if (isDrawing && selectedTool === "polygon") {
     const currentPolygon = shapes.polygons[shapes.polygons.length - 1];

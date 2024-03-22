@@ -278,6 +278,36 @@ class Polygon extends Shape {
     this.height = 0;
   }
 
+  removeVertex(i) {
+    this.vertexBuffer.splice(i * 2, 2);
+    this.vertexPx.splice(i * 2, 2);
+    this.colorBuffer.splice(i * 4, 4);
+    this.numOfVertex--;
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
+  }
+
+  editPolygon(x, y, xPx, yPx, rgbaColor) {
+    if (this.numOfVertex < 3) {
+      return;
+    }
+
+    // If a vertex is selected, remove the vertex
+    for (let i = 0; i < this.numOfVertex; i++) {
+      const dx = this.getVertexX(i) - x;
+      const dy = this.getVertexY(i) - y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < 0.05) {
+        this.removeVertex(i);
+        return;
+      }
+    }
+
+    // Add a new vertex
+    this.addVertex(x, y, xPx, yPx, rgbaColor);
+  }
+
   isClosed() {
     if (this.numOfVertex < 3) {
       return;

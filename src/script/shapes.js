@@ -221,7 +221,6 @@ class Line extends Shape {
       const ratioHorizontal = initHorizontal / initDiagonal;
       const ratioVertical = initVertical / initDiagonal;
 
- 
       const finalHorizontal = finalDiagonal * ratioHorizontal + anchorPx[0];
       const finalVertical = finalDiagonal * ratioVertical + anchorPx[1];
 
@@ -259,5 +258,52 @@ class Line extends Shape {
     showLog(`Rotation: ${this.rotation}`);
     showLog(`RotationBase: ${this.rotationBase}`);
     showLog(`Anchor: ${this.anchor}`);
+  }
+}
+
+class Polygon extends Shape {
+  constructor(id, x, y, xPx, yPx, rgbaColor) {
+    super(id);
+
+    this.vertexBuffer = [x, y];
+    this.vertexBufferBase = [x, y];
+    this.vertexPx = [xPx, yPx];
+    this.colorBuffer = [...rgbaColor];
+    this.numOfVertex = 1;
+    this.anchor = [x, y];
+  }
+
+  updateWidth() {
+    this.width = 0;
+  }
+
+  updateHeight() {
+    this.height = 0;
+  }
+
+  addVertex(x, y, xPx, yPx, rgbaColor) {
+    this.vertexBuffer.push(x, y);
+    this.vertexBufferBase.push(x, y);
+    this.vertexPx.push(xPx, yPx);
+    this.colorBuffer.push(...rgbaColor);
+    this.numOfVertex++;
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
+
+    showLog(this.colorBuffer);
+  }
+
+  render(program) {
+    // Render vertex buffer
+    render(gl, program, "vertexPosition", this.vertexBuffer, 2);
+
+    // Render colorBuffer
+    render(gl, program, "vertexColor", this.colorBuffer, 4);
+
+    // Draw the line
+    if (this.numOfVertex > 2) {
+      gl.drawArrays(gl.TRIANGLE_FAN, 0, this.numOfVertex);
+    }
   }
 }

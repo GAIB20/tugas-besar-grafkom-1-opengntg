@@ -14,6 +14,7 @@ let canvasColor = [0.08, 0.08, 0.08, 1.0];
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 const shapes = {
   lines: [],
+  polygons: [],
 };
 
 // Selected shapes states
@@ -99,6 +100,18 @@ function updateSelectedObjects() {
       const obj = shapes.lines[parseInt(id.split("-")[1]) - 1];
       selectedShapes.push(obj);
     }
+
+    // Insert polygon object
+    if (id.includes("p-") && id.includes("point")) {
+      const obj = shapes.polygons[parseInt(id.split("-")[1]) - 1];
+      const pointId = parseInt(id.split("-")[3]) - 1;
+
+      selectedPoints.parentShape.push(obj);
+      selectedPoints.pointIndex.push(pointId);
+    } else {
+      const obj = shapes.polygons[parseInt(id.split("-")[1]) - 1];
+      selectedShapes.push(obj);
+    }
   });
   allShapesVertex = selectedPoints.parentShape.concat(selectedShapes);
 
@@ -132,6 +145,10 @@ function insertShapeToHTML(type, obj) {
     </div>`;
     }
 
+    const pointInputs = document.querySelectorAll(
+      `input[name="l-${obj.id}-point"]`
+    );
+
     // Handle shape checkbox event
     const shapeInput = document.querySelector(`#l-${obj.id}`);
     shapeInput.addEventListener("change", () => {
@@ -157,9 +174,96 @@ function insertShapeToHTML(type, obj) {
     });
 
     // Handle point checkbox event
+    pointInputs.forEach((point) => {
+      point.addEventListener("change", () => {
+        // Update selected objects
+        updateSelectedObjects();
+      });
+    });
+  }
+
+  if (type === "polygon") {
+    // Append new polygon to polygon object list
+    const newPolygon = document.createElement("div");
+    newPolygon.id = `div-p-${obj.id}`;
+    newPolygon.innerHTML = `<div class="object-item list">
+    <input type="checkbox" id="p-${obj.id}" name="p-${obj.id}" value="p-${obj.id}" />
+    <label for="p-${obj.id}">Polygon ${obj.id}</label>
+    </div>`;
+    polygonObjects.querySelector(".items").appendChild(newPolygon);
+
+    // Append new polygon points to polygon point list
+    for (let i = 1; i <= obj.numOfVertex; i++) {
+      newPolygon.innerHTML += `<div class="point-item list">
+      <input type="checkbox" id="p-${obj.id}-point-${i}" name="p-${obj.id}-point" value="p-${obj.id}-point-${i}" />
+      <label for="p-${obj.id}-point-${i}">Point ${i}</label>
+    </div>`;
+    }
+
     const pointInputs = document.querySelectorAll(
-      `input[name="l-${obj.id}-point"]`
+      `input[name="p-${obj.id}-point"]`
     );
+
+    // Handle shape checkbox event
+    const shapeInput = document.querySelector(`#p-${obj.id}`);
+    shapeInput.addEventListener("change", () => {
+      if (shapeInput.checked) {
+        // Check all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = true;
+        });
+      } else {
+        // Uncheck all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = false;
+        });
+      }
+
+      updateSelectedObjects();
+    });
+
+    // Handle point checkbox event
+    pointInputs.forEach((point) => {
+      point.addEventListener("change", () => {
+        // Update selected objects
+        updateSelectedObjects();
+      });
+    });
+  }
+}
+
+function insertPointToHTML(type, obj) {
+  if (type === "polygon") {
+    const parentPolygonDiv = document.querySelector(`#div-p-${obj.id}`);
+    const newPointId = obj.numOfVertex;
+    parentPolygonDiv.innerHTML += `<div class="point-item list">
+      <input type="checkbox" id="p-${obj.id}-point-${newPointId}" name="p-${obj.id}-point" value="p-${obj.id}-point-${newPointId}" />
+      <label for="p-${obj.id}-point-${newPointId}">Point ${newPointId}</label>
+    </div>`;
+
+    const pointInputs = document.querySelectorAll(
+      `input[name="p-${obj.id}-point"]`
+    );
+
+    // Handle shape checkbox event
+    const shapeInput = document.querySelector(`#p-${obj.id}`);
+    shapeInput.addEventListener("change", () => {
+      if (shapeInput.checked) {
+        // Check all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = true;
+        });
+      } else {
+        // Uncheck all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = false;
+        });
+      }
+
+      updateSelectedObjects();
+    });
+
+    // Handle point checkbox event
     pointInputs.forEach((point) => {
       point.addEventListener("change", () => {
         // Update selected objects
@@ -239,6 +343,7 @@ canvas.addEventListener("mousedown", (e) => {
   if (
     selectedTool === "cursor" ||
     selectedTool === "canvas" ||
+    selectedTool === "polygon" ||
     isDrawing ||
     isEditing
   ) {
@@ -252,8 +357,33 @@ canvas.addEventListener("mousedown", (e) => {
     shapes.lines.push(newLine);
     insertShapeToHTML("line", newLine);
   }
-
   isDrawing = true;
+});
+
+// When the user started drawing polygon
+canvas.addEventListener("click", (e) => {
+  if (
+    selectedTool === "cursor" ||
+    selectedTool === "canvas" ||
+    selectedTool !== "polygon" ||
+    isEditing
+  ) {
+    return;
+  }
+
+  const { x, y, x_pix, y_pix } = getMousePos(e);
+
+  if (isDrawing && selectedTool === "polygon") {
+    const currentPolygon = shapes.polygons[shapes.polygons.length - 1];
+    currentPolygon.addVertex(x, y, x_pix, y_pix, shapeColor);
+    insertPointToHTML("polygon", currentPolygon);
+  } else if (selectedTool === "polygon") {
+    const newId = shapes.polygons.length + 1;
+    const newPolygon = new Polygon(newId, x, y, x_pix, y_pix, shapeColor);
+    shapes.polygons.push(newPolygon);
+    insertShapeToHTML("polygon", newPolygon);
+    isDrawing = true;
+  }
 });
 
 // When the user is drawing
@@ -278,6 +408,7 @@ canvas.addEventListener("mouseup", (e) => {
   if (
     selectedTool === "cursor" ||
     selectedTool === "canvas" ||
+    selectedTool === "polygon" ||
     !isDrawing ||
     isEditing
   ) {
